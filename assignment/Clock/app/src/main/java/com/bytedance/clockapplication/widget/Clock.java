@@ -98,7 +98,7 @@ public class Clock extends View {
         mCenterY = halfWidth;
         mRadius = halfWidth;
         PANEL_RADIUS = mRadius;
-        HOUR_POINTER_LENGTH = PANEL_RADIUS - 400;
+        HOUR_POINTER_LENGTH = PANEL_RADIUS - 300;
         MINUTE_POINTER_LENGTH = PANEL_RADIUS - 250;
         SECOND_POINTER_LENGTH = PANEL_RADIUS - 150;
 
@@ -155,24 +155,26 @@ public class Clock extends View {
     private void drawHoursValues(Canvas canvas) {
         // Default Color:
         // - hoursValuesColor
+        //设置抗锯齿标志，以确保绘制的图形边缘平滑
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         // 设置画笔颜色
-        paint.setColor(Color.WHITE);
+        paint.setColor(DEFAULT_PRIMARY_COLOR);
 
         // 设置字体大小
-        paint.setTextSize(100);
+        paint.setTextSize(60);
 
         // 计算时钟数字的位置
         float textWidth = paint.measureText("12");
         float textHeight = (paint.descent() + paint.ascent()) / 2; // 获取字体高度的一半
         float startX = mCenterX - textWidth / 2;
-        float startY = mCenterY - mRadius + 2 + textHeight;
+        float startY = mCenterY - mRadius + 150 - textHeight/2;
+        float radius = mRadius - startY;
 
         // 绘制小时数字
         for (int i = 1; i <= 12; i++) {
             double angle = Math.toRadians(i * 30); // 每个小时的角度为30度
-            float x = (float) (mCenterX + Math.sin(angle) * (PANEL_RADIUS + 20) - textWidth / 2);
-            float y = (float) (mCenterY - Math.cos(angle) * (PANEL_RADIUS + 20) + textHeight / 2);
+            float x = (float) (startX + Math.sin(angle) * (radius) );
+            float y = (float) (startY - Math.cos(angle) * (radius) +radius);
             canvas.drawText(String.valueOf(i), x, y, paint);
         }
 
